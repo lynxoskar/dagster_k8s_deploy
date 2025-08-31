@@ -1,30 +1,24 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: dagster-grpc-A
+  name: dagster-grpc-B
   namespace: dagster
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: dagster-grpc-A
+      app: dagster-grpc-B
   template:
     metadata:
       labels:
-        app: dagster-grpc-A
+        app: dagster-grpc-B
     spec:
       containers:
         - name: dagster-grpc
           # IMPORTANT: Replace this with your own custom image
-          image: {{ images.dagster_user_code }}
+          image: your-registry.com/dagster-user-code:latest
           imagePullPolicy: Always
           command:
-            - "python"
-            - "-m"
-            - "debugpy"
-            - "--listen"
-            - "0.0.0.0:5678"
-            - "-m"
             - "dagster"
             - "api"
             - "grpc"
@@ -36,7 +30,6 @@ spec:
             - "/opt/dagster/app/workspace.yaml"
           ports:
             - containerPort: 8080
-            - containerPort: 5678
           volumeMounts:
             - name: dagster-code
               mountPath: /opt/dagster/app
@@ -45,8 +38,8 @@ spec:
           image: k8s.gcr.io/git-sync/git-sync:v3.4.0
           args:
             # IMPORTANT: Replace with your git repository
-            - "--repo=https://github.com/your-org/your-rpo.giet"
-            - "--branch=A"
+            - "--repo=https://github.com/your-org/your-repo.git"
+            - "--branch=B"
             - "--depth=1"
             - "--period=30s"
             - "--root=/opt/dagster/app"

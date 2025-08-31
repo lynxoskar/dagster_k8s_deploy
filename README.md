@@ -59,7 +59,12 @@ This setup expects your Dagster code repository to be structured with a `workspa
 ├── .git/
 ├── my_dagster_project/
 │   ├── __init__.py
-│   └── definitions.py
+│   ├── definitions.py
+│   └── defs/
+│       └── __init__.py
+├── pyproject.toml          # Include this!
+├── uv.lock                 # Include this!
+├── .venv/                  # Local only (gitignored)
 └── workspace.yaml
 ```
 

@@ -1,9 +1,9 @@
-# Site B PostgreSQL
+# Dagster Instance PostgreSQL
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: postgres-pvc-B
-  namespace: datpipe-B
+  name: postgres-pvc-dagster
+  namespace: dagster
 spec:
   accessModes:
     - ReadWriteOnce

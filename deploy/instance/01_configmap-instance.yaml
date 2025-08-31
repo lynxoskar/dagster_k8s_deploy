@@ -1,0 +1,39 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: dagster-instance-cm
+  namespace: dagster
+data:
+  dagster.yaml: |
+    run_storage:
+      module: dagster_postgres.run_storage
+      class: DagsterPostgresRunStorage
+      config:
+        postgres_db:
+          hostname: postgres-dagster
+          port: 5432
+          username: dagster
+          password: dagster_password
+          db_name: dagster
+
+    event_log_storage:
+      module: dagster_postgres.event_log
+      class: DagsterPostgresEventLogStorage
+      config:
+        postgres_db:
+          hostname: postgres-dagster
+          port: 5432
+          username: dagster
+          password: dagster_password
+          db_name: dagster
+
+    schedule_storage:
+      module: dagster_postgres.schedule_storage
+      class: DagsterPostgresScheduleStorage
+      config:
+        postgres_db:
+          hostname: postgres-dagster
+          port: 5432
+          username: dagster
+          password: dagster_password
+          db_name: dagster

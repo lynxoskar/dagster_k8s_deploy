@@ -16,7 +16,7 @@ spec:
       containers:
         - name: dagster-grpc
           # IMPORTANT: Replace this with your own custom image
-          image: {{ images.dagster_user_code }}
+          image: your-registry.com/dagster-user-code:latest
           imagePullPolicy: Always
           command:
             - "python"

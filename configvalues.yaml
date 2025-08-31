@@ -1,0 +1,18 @@
+# Image configuration for Dagster deployment
+# Update these values for different environments/deployments
+
+images:
+  dagster_user_code: "dagster/dagster-k8s:1.5.0"
+  
+  # Dagster framework images
+  dagster_webserver: "dagster/dagster-k8s:1.5.0"
+  dagster_daemon: "dagster/dagster-k8s:1.5.0"
+  
+  # PostgreSQL database image
+  postgres: "postgres:15"
+
+# Environment-specific settings
+environment:
+  postgres_password: "dagster_password"
+  postgres_user: "dagster"
+  postgres_db: "dagster"

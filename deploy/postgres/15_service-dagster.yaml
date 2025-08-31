@@ -1,11 +1,11 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: postgres-B
-  namespace: datpipe-B
+  name: postgres-dagster
+  namespace: dagster
 spec:
   selector:
-    app: postgres-B
+    app: postgres-dagster
   ports:
     - port: 5432
       targetPort: 5432

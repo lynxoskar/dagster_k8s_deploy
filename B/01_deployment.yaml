@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: dagster-grpc-B
-  namespace: datpipe-B
+  namespace: dagster
 spec:
   replicas: 1
   selector:
@@ -16,7 +16,7 @@ spec:
       containers:
         - name: dagster-grpc
           # IMPORTANT: Replace this with your own custom image
-          image: dagster/dagster-k8s:latest
+          image: {{ images.dagster_user_code }}
           imagePullPolicy: Always
           command:
             - "dagster"

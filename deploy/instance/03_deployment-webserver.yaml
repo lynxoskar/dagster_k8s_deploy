@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: dagster-webserver
-          image: {{ images.dagster_webserver }}
+          image: dagster/dagster-k8s:1.5.0
           command:
             [
               "dagster-webserver",

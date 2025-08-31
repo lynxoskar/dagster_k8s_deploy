@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: dagster-grpc-A
+  namespace: datpipe-A
+spec:
+  selector:
+    app: dagster-grpc-A
+  ports:
+    - name: grpc
+      port: 8080
+      targetPort: 8080
+    - name: debug
+      port: 5678
+      targetPort: 5678

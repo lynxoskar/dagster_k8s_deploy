@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dagster-webserver
+  namespace: dagster
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dagster-webserver
+  template:
+    metadata:
+      labels:
+        app: dagster-webserver
+    spec:
+      containers:
+        - name: dagster-webserver
+          image: dagster/dagster-k8s:latest
+          command:
+            [
+              "dagster-webserver",
+              "-h",
+              "0.0.0.0",
+              "-p",
+              "3000",
+              "-w",
+              "/opt/dagster/dagster_home/workspace.yaml",
+            ]
+          ports:
+            - containerPort: 3000
+          volumeMounts:
+            - name: dagster-instance
+              mountPath: /opt/dagster/dagster_home/
+            - name: dagster-workspace
+              mountPath: /opt/dagster/dagster_home/workspace.yaml
+              subPath: workspace.yaml
+      volumes:
+        - name: dagster-instance
+          configMap:
+            name: dagster-instance-cm
+        - name: dagster-workspace
+          configMap:
+            name: dagster-workspace-cm

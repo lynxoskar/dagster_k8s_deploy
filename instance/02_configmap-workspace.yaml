@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: dagster-workspace-cm
+  namespace: dagster
+data:
+  workspace.yaml: |
+    load_from:
+      - grpc_server:
+          host: dagster-grpc-A.datpipe-A.svc.cluster.local
+          port: 8080
+          location_name: "A_environment"
+
+      - grpc_server:
+          host: dagster-grpc-B.datpipe-B.svc.cluster.local
+          port: 8080
+          location_name: "B_environment"

@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dagster-grpc-B
+  namespace: datpipe-B
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dagster-grpc-B
+  template:
+    metadata:
+      labels:
+        app: dagster-grpc-B
+    spec:
+      containers:
+        - name: dagster-grpc
+          # IMPORTANT: Replace this with your own custom image
+          image: dagster/dagster-k8s:latest
+          imagePullPolicy: Always
+          command:
+            - "dagster"
+            - "api"
+            - "grpc"
+            - "-h"
+            - "0.0.0.0"
+            - "-p"
+            - "8080"
+            - "-f"
+            - "/opt/dagster/app/workspace.yaml"
+          ports:
+            - containerPort: 8080
+          volumeMounts:
+            - name: dagster-code
+              mountPath: /opt/dagster/app
+
+        - name: git-sync
+          image: k8s.gcr.io/git-sync/git-sync:v3.4.0
+          args:
+            # IMPORTANT: Replace with your git repository
+            - "--repo=https://github.com/your-org/your-repo.git"
+            - "--branch=B"
+            - "--depth=1"
+            - "--period=30s"
+            - "--root=/opt/dagster/app"
+          volumeMounts:
+            - name: dagster-code
+              mountPath: /opt/dagster/app
+
+      volumes:
+        - name: dagster-code
+          emptyDir: {}

@@ -11,6 +11,9 @@ images:
   # PostgreSQL database image
   postgres: "postgres:15"
 
+  # git-sync sidecar image
+  git_sync: "registry.k8s.io/git-sync/git-sync:v4.2.4"
+
 # Environment-specific settings
 environment:
   postgres_password: "dagster_password"

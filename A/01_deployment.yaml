@@ -42,7 +42,7 @@ spec:
               mountPath: /opt/dagster/app
 
         - name: git-sync
-          image: k8s.gcr.io/git-sync/git-sync:v3.4.0
+          image: {{ images.git_sync }}
           args:
             # IMPORTANT: Replace with your git repository
             - "--repo=https://github.com/your-org/your-rpo.giet"

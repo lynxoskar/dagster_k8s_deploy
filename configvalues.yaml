@@ -19,3 +19,8 @@ environment:
   postgres_password: "dagster_password"
   postgres_user: "dagster"
   postgres_db: "dagster"
+  # Git sync settings for local deploy
+  repo_url_a: "https://github.com/lynxoskar/dagster_k8s_deploy.git"
+  repo_ref_a: "master"
+  repo_url_b: "https://github.com/lynxoskar/dagster_k8s_deploy.git"
+  repo_ref_b: "master"

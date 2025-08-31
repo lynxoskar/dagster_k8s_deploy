@@ -13,18 +13,40 @@ spec:
       labels:
         app: dagster-grpc-a
     spec:
+      initContainers:
+        - name: bootstrap-code
+          image: busybox:1.36
+          command:
+            - sh
+            - -c
+            - |
+              set -e
+              mkdir -p /opt/dagster/app/playground /opt/dagster/app/repo
+              # allow git-sync (uid 65533) to write into repo dir
+              chown 65533:65533 /opt/dagster/app/repo || chmod 777 /opt/dagster/app/repo || true
+              cat > /opt/dagster/app/playground/__init__.py <<'PY'
+              # empty
+              PY
+              cat > /opt/dagster/app/playground/definitions.py <<'PY'
+              from dagster import Definitions
+
+              defs = Definitions(assets=[])
+              PY
+              cat > /opt/dagster/app/workspace.yaml <<'YAML'
+              load_from:
+                - python_module:
+                    module_name: playground.definitions
+                    location_name: playground
+              YAML
+          volumeMounts:
+            - name: dagster-code
+              mountPath: /opt/dagster/app
       containers:
         - name: dagster-grpc
           # IMPORTANT: Replace this with your own custom image
           image: {{ images.dagster_user_code }}
           imagePullPolicy: Always
           command:
-            - "python"
-            - "-m"
-            - "debugpy"
-            - "--listen"
-            - "0.0.0.0:5678"
-            - "-m"
             - "dagster"
             - "api"
             - "grpc"
@@ -32,8 +54,13 @@ spec:
             - "0.0.0.0"
             - "-p"
             - "8080"
-            - "-f"
-            - "/opt/dagster/app/workspace.yaml"
+            - "-m"
+            - "playground.definitions"
+            - "-d"
+            - "/opt/dagster/app"
+          env:
+            - name: PYTHONPATH
+              value: "/opt/dagster/app"
           ports:
             - containerPort: 8080
             - containerPort: 5678
@@ -44,12 +71,11 @@ spec:
         - name: git-sync
           image: {{ images.git_sync }}
           args:
-            # IMPORTANT: Replace with your git repository
-            - "--repo=https://github.com/your-org/your-rpo.giet"
-            - "--branch=A"
+            - "--repo={{ environment.repo_url_a }}"
+            - "--ref={{ environment.repo_ref_a }}"
             - "--depth=1"
             - "--period=30s"
-            - "--root=/opt/dagster/app"
+            - "--root=/opt/dagster/app/repo"
           volumeMounts:
             - name: dagster-code
               mountPath: /opt/dagster/app

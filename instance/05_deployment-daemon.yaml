@@ -21,7 +21,7 @@ spec:
             - name: dagster-instance
               mountPath: /opt/dagster/dagster_home/
             - name: dagster-workspace
-              mountPath: /opt/dagster/dagster_home/workspace.yaml
+              mountPath: /opt/dagster/workspace/workspace.yaml
               subPath: workspace.yaml
       volumes:
         - name: dagster-instance

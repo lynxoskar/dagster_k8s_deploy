@@ -191,3 +191,8 @@ load_from:
     ```
 
 4.  **Start Debugging**: Set breakpoints in your local code, run the "Attach to Dagster (k8s-A)" configuration from the "Run and Debug" panel in VS Code. When you execute a run in Dagit that uses your code, the debugger will pause at your breakpoints.
+
+## Additional Resources
+
+- [Deploying a Docker image to AWS Lambda](https://docs.astral.sh/uv/guides/integration/aws-lambda/#deploying-a-docker-image)
+- [uv integration with AWS Lambda](https://docs.astral.sh/uv/guides/integration/aws-lambda/)

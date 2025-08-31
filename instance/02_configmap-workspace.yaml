@@ -7,11 +7,11 @@ data:
   workspace.yaml: |
     load_from:
       - grpc_server:
-          host: dagster-grpc-A.dagster.svc.cluster.local
+          host: dagster-grpc-a.dagster.svc.cluster.local
           port: 8080
           location_name: "A_environment"
 
       - grpc_server:
-          host: dagster-grpc-B.dagster.svc.cluster.local
+          host: dagster-grpc-b.dagster.svc.cluster.local
           port: 8080
           location_name: "B_environment"

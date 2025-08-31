@@ -1,17 +1,17 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: dagster-grpc-A
+  name: dagster-grpc-a
   namespace: dagster
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: dagster-grpc-A
+      app: dagster-grpc-a
   template:
     metadata:
       labels:
-        app: dagster-grpc-A
+        app: dagster-grpc-a
     spec:
       containers:
         - name: dagster-grpc

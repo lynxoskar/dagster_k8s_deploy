@@ -1,11 +1,11 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: dagster-grpc-B
+  name: dagster-grpc-b
   namespace: dagster
 spec:
   selector:
-    app: dagster-grpc-B
+    app: dagster-grpc-b
   ports:
     - name: grpc
       port: 8080

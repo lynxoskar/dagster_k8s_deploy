@@ -9,10 +9,7 @@ dependencies = [
   "pyyaml>=6.0",
 ]
 
-[project.scripts]
-# Typer app entrypoint. After `uv sync`, you can run `dkd`.
-dkd = "cli:app"
+[# console scripts intentionally removed; use `uv run cli.py`]
 
 [tool.uv]
 dev-dependencies = []
-

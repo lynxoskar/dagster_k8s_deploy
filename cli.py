@@ -3,7 +3,7 @@
 # /// script
 # requires-python = ">=3.9"
 # dependencies = [
-#     "typer[all]>=0.12.0",
+#     "typer>=0.12.0",
 #     "loguru>=0.7.2",
 #     "pyyaml>=6.0",
 # ]

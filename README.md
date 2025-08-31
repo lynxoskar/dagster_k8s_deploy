@@ -206,22 +206,14 @@ load_from:
 
 ## CLI Tooling (Typer + Loguru)
 
-This repo ships a small CLI to generate and apply manifests with nicer output.
+This repo ships a small uv script CLI (`cli.py`) to generate and apply manifests with nicer output.
 
-- Install deps (uv recommended):
-  - `uv run --help` will auto-resolve from `pyproject.toml`.
+- Run directly with uv (no manual install needed):
+  - Generate manifests: `uv run cli.py generate`
+  - Deploy components: `uv run cli.py deploy --components postgres instance`
+  - Validate setup: `uv run cli.py validate`
 
-Examples:
+You can also make it executable and run directly:
 
-- Generate manifests to `deploy/` using `configvalues.yaml`:
-  - `uv run python cli.py generate`
-
-- Apply selected components via kubectl (from `deploy/`):
-  - `uv run python cli.py deploy --components postgres instance`
-
-- Validate config and sources:
-  - `uv run python cli.py validate`
-
-If you `uv sync`, you can also invoke the console script:
-
-- `uv run dkd generate -v`
+- `chmod +x cli.py`
+- `./cli.py generate -v`

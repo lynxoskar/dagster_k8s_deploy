@@ -1,125 +1,33 @@
-#!/usr/bin/env python3
-"""
-# /// script
-# requires-python = ">=3.8"
-# dependencies = [
-#     "pyyaml",
-# ]
-# ///
-
-Script to generate Kubernetes deployment files from templates using configvalues.yaml.
-
-Usage:
-    uv run create_deploy.py
-
-This will:
-1. Read configvalues.yaml for image and environment settings
-2. Process all YAML template files in the current directory
-3. Generate deployment-ready files in the deploy/ directory
-"""
-
-import os
-import shutil
-import yaml
-from pathlib import Path
-
-
-def load_config(config_file: str = "configvalues.yaml") -> dict:
-    """Load configuration values from YAML file."""
-    with open(config_file, 'r') as f:
-        return yaml.safe_load(f)
-
-
-def process_yaml_template(template_path: Path, config: dict) -> str:
-    """Process a YAML template file and replace placeholders with config values."""
-    with open(template_path, 'r') as f:
-        content = f.read()
-    
-    # Replace image placeholders
-    for image_key, image_value in config.get('images', {}).items():
-        placeholder = f"{{{{ images.{image_key} }}}}"
-        content = content.replace(placeholder, image_value)
-    
-    # Replace environment placeholders
-    for env_key, env_value in config.get('environment', {}).items():
-        placeholder = f"{{{{ environment.{env_key} }}}}"
-        content = content.replace(placeholder, str(env_value))
-    
-    return content
-
-
-def create_deploy_directory(source_dirs: list, config: dict):
-    """Create deploy directory with processed YAML files."""
-    deploy_dir = Path("deploy")
-    
-    # Clean and create deploy directory
-    if deploy_dir.exists():
-        shutil.rmtree(deploy_dir)
-    deploy_dir.mkdir()
-    
-    print(f"Created deploy directory: {deploy_dir.absolute()}")
-    
-    # Process each source directory
-    for source_dir in source_dirs:
-        source_path = Path(source_dir)
-        if not source_path.exists():
-            print(f"Warning: Source directory {source_dir} does not exist, skipping...")
-            continue
-            
-        # Create corresponding directory in deploy/
-        target_dir = deploy_dir / source_dir
-        target_dir.mkdir(parents=True, exist_ok=True)
-        
-        # Process all YAML files in the source directory
-        yaml_files = list(source_path.glob("*.yaml")) + list(source_path.glob("*.yml"))
-        
-        for yaml_file in yaml_files:
-            print(f"Processing {yaml_file}...")
-            
-            # Process template
-            processed_content = process_yaml_template(yaml_file, config)
-            
-            # Write to deploy directory
-            target_file = target_dir / yaml_file.name
-            with open(target_file, 'w') as f:
-                f.write(processed_content)
-            
-            print(f"  -> {target_file}")
-
-
-def main():
-    """Main execution function."""
-    print("🚀 Creating Kubernetes deployment files...")
-    
-    # Load configuration
-    try:
-        config = load_config()
-        print(f"✅ Loaded configuration from configvalues.yaml")
-    except FileNotFoundError:
-        print("❌ Error: configvalues.yaml not found!")
-        return 1
-    except yaml.YAMLError as e:
-        print(f"❌ Error parsing configvalues.yaml: {e}")
-        return 1
-    
-    # Define source directories to process
-    source_directories = ["postgres", "instance", "A", "B"]
-    
-    # Create deployment files
-    try:
-        create_deploy_directory(source_directories, config)
-        print("✅ Deployment files created successfully!")
-        print("\nTo deploy:")
-        print("  kubectl apply -f deploy/postgres/")
-        print("  kubectl apply -f deploy/instance/")
-        print("  kubectl apply -f deploy/A/")
-        print("  kubectl apply -f deploy/B/")
-    except Exception as e:
-        print(f"❌ Error creating deployment files: {e}")
-        return 1
-    
-    return 0
-
-
-if __name__ == "__main__":
-    exit(main())
+Script started on 2025-08-31 13:33:41+02:00 [TERM="xterm-256color" TTY="/dev/pts/3" COLUMNS="163" LINES="36"]
+[?2004h[38;2;38;198;218mWSL at [0m[38;2;38;198;218m oskar: [0m[92m~ [0m[38;2;255;213;79m❯ [0m[K[38;2;38;198;218mWSL at [0m[38;2;38;198;218m oskar: [0m[92m~ [0m[38;2;255;213;79m❯ [0m[K[38;2;38;198;218mWSL at [0m[38;2;38;198;218m oskar: [0m[92m~ [0m[38;2;255;213;79m❯ [0m[K[38;2;38;198;218mWSL at [0m[38;2;38;198;218m oskar: [0m[92m~ [0m[38;2;255;213;79m❯ [0m[K[38;2;38;198;218mWSL at [0m[38;2;38;198;218m oskar: [0m[92m~ [0m[38;2;255;213;79m❯ [0m[K[38;2;38;198;218mWSL at [0m[38;2;38;198;218m oskar: [0m[92m~ [0m[38;2;255;213;79m❯ [0m[K[38;2;38;198;218mWSL at [0m[38;2;38;198;218m oskar: [0m[92m~ [0m[38;2;255;213;79m❯ [0m[K[38;2;38;198;218mWSL at [0m[38;2;38;198;218m oskar: [0m[92m~ [0m[38;2;255;213;79m❯ [0m[K[38;2;38;198;218mWSL at [0m[38;2;38;198;218m oskar: [0m[92m~ [0m[38;2;255;213;79m❯ [0m[K[38;2;38;198;218mWSL at [0m[38;2;38;198;218m oskar: [0m[92m~ [0m[38;2;255;213;79m❯ [0m[K[38;2;38;198;218mWSL at [0m[38;2;38;198;218m oskar: [0m[92m~ [0m[38;2;255;213;79m❯ [0m[K[38;2;38;198;218mWSL at [0m[38;2;38;198;218m oskar: [0m[92m~ [0m[38;2;255;213;79m❯ [0m[K[38;2;38;198;218mWSL at [0m[38;2;38;198;218m oskar: [0m[92m~ [0m[38;2;255;213;79m❯ [0m[K[38;2;38;198;218mWSL at [0m[38;2;38;198;218m oskar: [0m[92m~ [0m[38;2;255;213;79m❯ [0mexec bashbrew install codex[9Pexec bash[Kls
+[?2004l[0m[01;34mDownloads[0m                      [01;34mclaude-projects[0m     [01;34mdatlake[0m            [01;31mducklake.zip[0m  [01;34mlakepipe[0m      [01;34mmy_central_repo.git[0m  roll3.parquet  [01;34mtest[0m
+[01;32mGhostty-1.0.1-x86_64.AppImage[0m  [01;34mdag_poc[0m             [01;34mdatpipe[0m            [34;42mducklake_py[0m   [01;34mlakepipe_net[0m  [01;34mmycode[0m               [01;34msnap[0m           tmux-client-9382.log
+[01;34magent_instructions[0m             [01;34mdagster_deploy[0m      [01;32mdotnet-install.sh[0m  [01;34mfileServe200[0m  [01;34mllms[0m          roll.csv             [01;34mstater[0m
+[01;34mbin[0m                            [01;34mdagster_k8s_deploy[0m  [01;32mduckdb[0m             [01;34mgo[0m            [01;34mlseg_stream[0m   roll2.csv            [01;34mtemp[0m
+[?2004h[38;2;38;198;218mWSL at [0m[38;2;38;198;218m oskar: [0m[92m~ [0m[38;2;255;213;79m❯ [0mcd [K[K[Kls
+[?2004l[0m[01;34mDownloads[0m                      [01;34mclaude-projects[0m     [01;34mdatlake[0m            [01;31mducklake.zip[0m  [01;34mlakepipe[0m      [01;34mmy_central_repo.git[0m  roll3.parquet  [01;34mtest[0m
+[01;32mGhostty-1.0.1-x86_64.AppImage[0m  [01;34mdag_poc[0m             [01;34mdatpipe[0m            [34;42mducklake_py[0m   [01;34mlakepipe_net[0m  [01;34mmycode[0m               [01;34msnap[0m           tmux-client-9382.log
+[01;34magent_instructions[0m             [01;34mdagster_deploy[0m      [01;32mdotnet-install.sh[0m  [01;34mfileServe200[0m  [01;34mllms[0m          roll.csv             [01;34mstater[0m
+[01;34mbin[0m                            [01;34mdagster_k8s_deploy[0m  [01;32mduckdb[0m             [01;34mgo[0m            [01;34mlseg_stream[0m   roll2.csv            [01;34mtemp[0m
+[?2004h[38;2;38;198;218mWSL at [0m[38;2;38;198;218m oskar: [0m[92m~ [0m[38;2;255;213;79m❯ [0mcd a[Kdae[Kgster_k8s_deploy/
+[?2004l[?2004h[38;2;38;198;218mWSL at [0m[38;2;38;198;218m oskar: [0m[92mdagster_k8s_deploy [0m[38;2;255;255;255mon[49m[37m master [0m[38;2;255;213;79m❯ [0mls
+[?2004l[0m[01;34mA[0m  README.md  [01;34mcodelocation[0m     configvalues.yaml  [01;34mdeploy[0m           git-sync.md              [01;34minstance[0m  pyproject.toml
+[01;34mB[0m  cli.py     [01;32mcommon_utils.sh[0m  [01;32mcreate_deploy.py[0m   deploy_stack.sh  [01;32minstall_dependencies.sh[0m  [01;34mpostgres[0m
+[?2004h[38;2;38;198;218mWSL at [0m[38;2;38;198;218m oskar: [0m[92mdagster_k8s_deploy [0m[38;2;255;255;255mon[49m[37m master [0m[38;2;255;213;79m❯ [0muv run cli.py
+[?2004lUsing CPython [36m3.13.0[39m
+Creating virtual environment at: [36m.venv[39m
+[37m⠙[0m [2m                                                                                                                                                                 [0m[2K[37m⠙[0m [2mResolving dependencies...                                                                                                                                        [0m[2K[37m⠋[0m [2mResolving dependencies...                                                                                                                                        [0m[2K[37m⠙[0m [2mResolving dependencies...                                                                                                                                        [0m[2K[37m⠋[0m [2mResolving dependencies...                                                                                                                                        [0m[2K[37m⠙[0m [2mResolving dependencies...                                                                                                                                        [0m[2K[37m⠙[0m [2mdagster-k8s-deploy-tools==0.1.0                                                                                                                                  [0m[2K[37m⠙[0m [2mdagster-k8s-deploy-tools==0.1.0                                                                                                                                  [0m[2K[37m⠙[0m [2mloguru==0.7.3                                                                                                                                                    [0m[2K[37m⠙[0m [2mpyyaml==6.0.2                                                                                                                                                    [0m[2K[37m⠙[0m [2mtyper==0.17.3                                                                                                                                                    [0m[2K[37m⠙[0m [2mtyper==0.17.3                                                                                                                                                    [0m[2K[37m⠙[0m [2mcolorama==0.4.6                                                                                                                                                  [0m[2K[37m⠙[0m [2mcolorama==0.4.6                                                                                                                                                  [0m[2K[37m⠙[0m [2mwin32-setctime==1.2.0                                                                                                                                            [0m[2K[37m⠙[0m [2mwin32-setctime==1.2.0                                                                                                                                            [0m[2K[37m⠙[0m [2mtyper==0.17.3                                                                                                                                                    [0m[2K[37m⠙[0m [2mcolorama==0.4.6                                                                                                                                                  [0m[2K[37m⠙[0m [2mcolorama==0.4.6                                                                                                                                                  [0m[2K[37m⠙[0m [2mwin32-setctime==1.2.0                                                                                                                                            [0m[2K[37m⠙[0m [2mwin32-setctime==1.2.0                                                                                                                                            [0m[2K[37m⠙[0m [2mtyper==0.17.3                                                                                                                                                    [0m[2K[37m⠙[0m [2mcolorama==0.4.6                                                                                                                                                  [0m[2K[37m⠙[0m [2mcolorama==0.4.6                                                                                                                                                  [0m[2K[37m⠙[0m [2mwin32-setctime==1.2.0                                                                                                                                            [0m[2K[37m⠙[0m [2mrich==14.1.0                                                                                                                                                     [0m[2K[1m[33mwarning[39m[0m[1m:[0m [1mThe package `typer==0.17.3` does not have an extra named `all`[0m
+[37m⠋[0m [2mPreparing packages...[0m (0/0)                                                                                                                                      [2K[37m⠋[0m [2mPreparing packages...[0m (0/2)                                                                                                                                      [2K[37m⠙[0m [2mPreparing packages...[0m (0/2)                                                                                                                                      [2K[37m⠙[0m [2mPreparing packages...[0m (0/2)
+[2mtyping-extensions[0m [32m[2m------------------------------[0m[0m     0 B/43.57 KiB                                                                                                 [1A[2K[1B[2K[1A[37m⠙[0m [2mPreparing packages...[0m (0/2)
+[2mtyping-extensions[0m [32m------------[2m------------------[0m[0m 16.00 KiB/43.57 KiB                                                                                               [1A[2K[1B[2K[1A[37m⠙[0m [2mPreparing packages...[0m (0/2)
+[2mtyping-extensions[0m [32m------------[2m------------------[0m[0m 16.00 KiB/43.57 KiB
+[2mtyper     [0m [32m[2m------------------------------[0m[0m     0 B/45.40 KiB                                                                                                        [2A[2K[1B[2K[1B[2K[2A[37m⠙[0m [2mPreparing packages...[0m (0/2)
+[2mtyping-extensions[0m [32m------------[2m------------------[0m[0m 16.00 KiB/43.57 KiB
+[2mtyper     [0m [32m----------[2m--------------------[0m[0m 14.92 KiB/45.40 KiB                                                                                                      [2A[2K[1B[2K[1B[2K[2A[37m⠙[0m [2mPreparing packages...[0m (0/2)
+[2mtyping-extensions[0m [32m-----------------------[2m-------[0m[0m 32.00 KiB/43.57 KiB
+[2mtyper     [0m [32m----------[2m--------------------[0m[0m 14.92 KiB/45.40 KiB                                                                                                      [2A[2K[1B[2K[1B[2K[2A[37m⠙[0m [2mPreparing packages...[0m (0/2)
+[2mtyping-extensions[0m [32m------------------------------[2m[0m[0m 43.57 KiB/43.57 KiB
+[2mtyper     [0m [32m----------[2m--------------------[0m[0m 14.92 KiB/45.40 KiB                                                                                                      [2A[2K[1B[2K[1B[2K[2A[37m⠙[0m [2mPreparing packages...[0m (0/2)
+[2mtyper     [0m [32m----------[2m--------------------[0m[0m 14.92 KiB/45.40 KiB                                                                                                      [1A[2K[1B[2K[1A[37m⠙[0m [2mPreparing packages...[0m (0/2)
+[2mtyper     [0m [32m---------------------[2m---------[0m[0m 30.92 KiB/45.40 KiB                                                                                                      [1A[2K[1B[2K[1A[37m⠙[0m [2mPreparing packages...[0m (0/2)
+[2mtyper     [0m [32m------------------------------[2m[0m[0m 45.40 KiB/45.40 KiB                                                                                                      [1A[2K[1B[2K[1A[37m⠙[0m [2mPreparing packages...[0m (0/2)                                                                                                                                      [2K[37m⠙[0m [2m[0m (2/2)                                                                                                                                                           [2K░░░░░░░░░░░░░░░░░░░░ [0/0] [2mInstalling wheels...                                                                                                                    [0m[2K░░░░░░░░░░░░░░░░░░░░ [0/10] [2mInstalling wheels...                                                                                                                   [0m[2K░░░░░░░░░░░░░░░░░░░░ [0/10] [2mtyping-extensions==4.15.0                                                                                                              [0m[2K██░░░░░░░░░░░░░░░░░░ [1/10] [2mtyping-extensions==4.15.0                                                                                                              [0m[2K██░░░░░░░░░░░░░░░░░░ [1/10] [2mmdurl==0.1.2                                                                                                                           [0m[2K████░░░░░░░░░░░░░░░░ [2/10] [2mmdurl==0.1.2                                                                                                                           [0m[2K████░░░░░░░░░░░░░░░░ [2/10] [2mclick==8.1.8                                                                                                                           [0m[2K██████░░░░░░░░░░░░░░ [3/10] [2mclick==8.1.8                                                                                                                           [0m[2K██████░░░░░░░░░░░░░░ [3/10] [2mtyper==0.17.3                                                                                                                          [0m[2K████████░░░░░░░░░░░░ [4/10] [2mtyper==0.17.3                                                                                                                          [0m[2K████████░░░░░░░░░░░░ [4/10] [2mpyyaml==6.0.2                                                                                                                          [0m[2K██████████░░░░░░░░░░ [5/10] [2mpyyaml==6.0.2                                                                                                                          [0m[2K██████████░░░░░░░░░░ [5/10] [2mshellingham==1.5.4                                                                                                                     [0m[2K████████████░░░░░░░░ [6/10] [2mshellingham==1.5.4                                                                                                                     [0m[2K████████████░░░░░░░░ [6/10] [2mloguru==0.7.3                                                                                                                          [0m[2K████████

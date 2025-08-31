@@ -1,4 +1,14 @@
-#!/usr/bin/env python3
+#!/usr/bin/env -S uv run
+"""
+# /// script
+# requires-python = ">=3.9"
+# dependencies = [
+#     "typer[all]>=0.12.0",
+#     "loguru>=0.7.2",
+#     "pyyaml>=6.0",
+# ]
+# ///
+"""
 from __future__ import annotations
 
 import subprocess
@@ -174,4 +184,3 @@ def validate(
 
 if __name__ == "__main__":
     app()
-
